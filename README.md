@@ -23,9 +23,9 @@ The server listens on `http://localhost:8008`.
 docker compose up -d --build
 ```
 
-This runs the app behind [Caddy](https://caddyserver.com/) as a reverse proxy. Set `ALLOWED_HOSTS` to this VPS's public IP (e.g. in a `.env` file: `ALLOWED_HOSTS=203.0.113.5`) — compose refuses to start without it. Contact data persists in a named Docker volume (`contacts-data`) across rebuilds.
+This runs the app behind [Caddy](https://caddyserver.com/) as a reverse proxy. Copy [.env.example](.env.example) to `.env` and set `ALLOWED_HOSTS` — compose refuses to start without it. Contact data persists in a named Docker volume (`contacts-data`) across rebuilds.
 
-By default [Caddyfile](Caddyfile) serves plain HTTP on port 80, since there's no domain to get an automatic HTTPS certificate for. Once you point a domain's A record at this VPS, switch to the domain-based block described in `Caddyfile`'s comments — Caddy will then handle HTTPS automatically, and `ALLOWED_HOSTS` should be updated to match.
+[Caddyfile](Caddyfile) serves both a domain (HTTPS, automatic via Let's Encrypt — replace `your-domain.example.com` with your real one, once its A record points at this VPS) and the bare IP (plain HTTP only, since Let's Encrypt won't issue a certificate for an IP address). `ALLOWED_HOSTS` should list whichever of the two you're actually using, comma-separated. If you don't have a domain yet, just leave the domain block's placeholder as-is — it stays dormant until DNS points somewhere real — and use the IP.
 
 ## Tools
 
@@ -59,7 +59,7 @@ Set these as environment variables:
 
 ## Security status
 
-There is currently **no authentication** on the dashboard, the delete action, or the `/mcp` endpoint — anyone who can reach the server can read, insert, or delete contacts. This is a deliberate decision to keep the server open to any client; revisit before storing real PII long-term. Two mitigations are in place given that: `ALLOWED_HOSTS` (DNS-rebinding protection) and a per-IP rate limit (`RATE_LIMIT_MAX_REQUESTS` / `RATE_LIMIT_WINDOW_SECONDS`, see [ratelimit.py](ratelimit.py)) — the rate limit is in-memory per instance, so it resets on restart and won't coordinate across multiple replicas. Without a domain, traffic is also unencrypted (plain HTTP) — don't rely on this for sensitive data until you add a domain (for HTTPS) and, ideally, auth. Reasonable options when ready: HTTP basic auth in `Caddyfile`, a bearer-token check in `main.py`, or restricting `Caddyfile` to an IP allowlist/VPN.
+There is currently **no authentication** on the dashboard, the delete action, or the `/mcp` endpoint — anyone who can reach the server can read, insert, or delete contacts. This is a deliberate decision to keep the server open to any client; revisit before storing real PII long-term. Two mitigations are in place given that: `ALLOWED_HOSTS` (DNS-rebinding protection) and a per-IP rate limit (`RATE_LIMIT_MAX_REQUESTS` / `RATE_LIMIT_WINDOW_SECONDS`, see [ratelimit.py](ratelimit.py)) — the rate limit is in-memory per instance, so it resets on restart and won't coordinate across multiple replicas. Traffic over the bare IP is plain HTTP (unencrypted) — only the domain path gets HTTPS. Don't rely on this for sensitive data until you're using the domain and, ideally, add auth. Reasonable options when ready: HTTP basic auth in `Caddyfile`, a bearer-token check in `main.py`, or restricting `Caddyfile` to an IP allowlist/VPN.
 
 ## Project layout
 

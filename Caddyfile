@@ -1,14 +1,17 @@
-# No domain yet, so this serves plain HTTP on port 80 and can't get an
-# automatic Let's Encrypt certificate (that requires a real domain name).
-# Set ALLOWED_HOSTS to this server's public IP so the app's DNS-rebinding
-# protection accepts it (see docker-compose.yml).
+# Serves both a domain (HTTPS, automatic via Let's Encrypt) and the bare
+# VPS IP (plain HTTP only — Let's Encrypt won't issue a cert for an IP
+# address). Set ALLOWED_HOSTS to both values, comma-separated, so the app's
+# DNS-rebinding protection accepts requests from either — see .env.example.
 #
-# Once you have a domain, point its A record at this VPS and replace the
-# block below with:
-#   your-domain.example.com {
-#       reverse_proxy mcp-server:8008
-#   }
-# and update ALLOWED_HOSTS to match — Caddy will then handle HTTPS automatically.
+# Replace your-domain.example.com below with your real domain (its A record
+# must already point at this VPS).
+
+your-domain.example.com {
+	reverse_proxy mcp-server:8008
+}
+
+# Catch-all for anything not matched above — i.e. requests by bare IP.
+# Stays on plain HTTP since there's no certificate for an IP address.
 :80 {
 	reverse_proxy mcp-server:8008
 }

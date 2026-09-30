@@ -4,8 +4,9 @@ services:
     restart: unless-stopped
     environment:
       - MCP_DEBUG=false
-      # Set to this VPS's public IP (or your domain, once you have one).
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:?set ALLOWED_HOSTS to this server's public IP or domain}
+      # Comma-separated: this VPS's public IP, its domain, or both — must
+      # match the site blocks in Caddyfile.
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:?set ALLOWED_HOSTS to this server's public IP and/or domain}
       - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-120}
       - RATE_LIMIT_WINDOW_SECONDS=${RATE_LIMIT_WINDOW_SECONDS:-60}
     volumes:
