@@ -1,0 +1,33 @@
+services:
+  mcp-server:
+    build: .
+    restart: unless-stopped
+    environment:
+      - MCP_DEBUG=false
+      # Set to this VPS's public IP (or your domain, once you have one).
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:?set ALLOWED_HOSTS to this server's public IP or domain}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-120}
+      - RATE_LIMIT_WINDOW_SECONDS=${RATE_LIMIT_WINDOW_SECONDS:-60}
+      - DOGRAH_API_ENDPOINT=${DOGRAH_API_ENDPOINT:-https://zyli.zoftcares.com}
+    volumes:
+      - contacts-data:/data
+    expose:
+      - "8008"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - mcp-server
+
+volumes:
+  contacts-data:
+  caddy-data:
+  caddy-config:

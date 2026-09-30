@@ -1,0 +1,408 @@
+:root {
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --muted: #F5F5F5;
+  --muted-foreground: #525252;
+  --border: #000000;
+  --border-light: #E5E5E5;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Source Serif 4", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  position: relative;
+}
+
+/* Subtle paper-like texture, per the monochrome system's "layered textures" rule */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, #000 1px, #000 2px);
+  background-size: 100% 4px;
+  opacity: 0.015;
+  z-index: 0;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 3rem 6rem;
+}
+
+/* Masthead nav, shared across pages */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.75rem 0;
+}
+
+.brand {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.site-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.site-nav a {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted-foreground);
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid transparent;
+  transition: color 100ms, border-color 100ms;
+}
+
+.site-nav a:hover {
+  color: var(--foreground);
+}
+
+.site-nav a.active {
+  color: var(--foreground);
+  border-bottom-color: var(--foreground);
+}
+
+.site-nav a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+hr.rule-hairline {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0;
+}
+
+header.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 2.5rem 0;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.9rem 1.75rem;
+  background: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid var(--foreground);
+  transition: background-color 100ms, color 100ms;
+}
+
+.btn:hover {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+hr.rule {
+  border: none;
+  border-top: 4px solid var(--foreground);
+  margin: 0 0 2.5rem;
+}
+
+.table-wrap {
+  border: 1px solid var(--foreground);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+  padding: 1rem 1.25rem;
+  background: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+tbody td {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  font-family: var(--font-body);
+  vertical-align: top;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr {
+  transition: background-color 100ms, color 100ms;
+}
+
+.table-wrap.interactive tbody tr:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.table-wrap.interactive tbody tr:hover td {
+  border-bottom-color: var(--foreground);
+}
+
+td[data-label="ID"] {
+  font-family: var(--font-mono);
+  color: var(--muted-foreground);
+}
+
+.table-wrap.interactive tbody tr:hover td[data-label="ID"] {
+  color: var(--background);
+}
+
+td[data-label="Created"] {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.table-wrap.interactive tbody tr:hover td[data-label="Created"] {
+  color: var(--background);
+}
+
+.actions-cell form {
+  margin: 0;
+}
+
+.delete-btn {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--foreground);
+  border: 2px solid var(--foreground);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: background-color 100ms, color 100ms, border-color 100ms;
+}
+
+.delete-btn:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.table-wrap.interactive tbody tr:hover .delete-btn {
+  border-color: var(--background);
+}
+
+.table-wrap.interactive tbody tr:hover .delete-btn:hover {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.delete-btn:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.table-wrap.interactive tbody tr:hover .delete-btn:focus-visible {
+  outline-color: var(--background);
+}
+
+.empty-row td {
+  text-align: center;
+  padding: 3.5rem 1.25rem;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.empty-row:hover {
+  background: var(--background);
+  color: inherit;
+}
+
+footer.page-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+}
+
+/* ---- Docs page prose ---- */
+
+.prose {
+  max-width: 46rem;
+}
+
+.prose p {
+  margin: 0 0 1.5rem;
+}
+
+.prose section {
+  margin-bottom: 3.5rem;
+}
+
+.prose h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  letter-spacing: -0.01em;
+  margin: 0 0 1.25rem;
+}
+
+.prose h3 {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 2rem 0 1rem;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--muted);
+  padding: 0.1em 0.4em;
+}
+
+.code-block {
+  background: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 1.5rem;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--foreground);
+  padding: 0.15rem 0.5rem;
+  margin-left: 0.5rem;
+}
+
+/* Below 700px the contacts table becomes a stack of bordered record cards —
+   a real responsive layout, not a squeezed table. */
+@media (max-width: 700px) {
+  main { padding: 0 1.25rem 4rem; }
+  header.page-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 1.5rem 0 2rem; }
+  .meta { margin-bottom: 0; }
+  .site-nav { gap: 1.25rem; }
+
+  .table-wrap { border: none; }
+
+  table, thead, tbody, th, td, tr { display: block; }
+
+  thead { display: none; }
+
+  tbody tr {
+    border: 1px solid var(--foreground);
+    margin-bottom: 1rem;
+    padding: 0.25rem 0;
+  }
+
+  tbody tr:last-child { margin-bottom: 0; }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid var(--border-light);
+    text-align: right;
+  }
+
+  .table-wrap.interactive tbody tr:hover td { border-bottom-color: var(--muted-foreground); }
+  tbody td:last-child { border-bottom: none; }
+
+  td[data-label]::before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    text-align: left;
+  }
+
+  .table-wrap.interactive tbody tr:hover td[data-label]::before { color: var(--background); }
+
+  .empty-row td { display: block; text-align: center; }
+  .empty-row td::before { content: none; }
+}

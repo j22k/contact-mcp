@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs &middot; User Information Collector</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main>
+    <div class="masthead">
+      <span class="brand">User Information Collector</span>
+      <nav class="site-nav">
+        <a href="/">Contacts</a>
+        <a href="/docs" class="active" aria-current="page">Docs</a>
+      </nav>
+    </div>
+    <hr class="rule-hairline">
+
+    <header class="page-header">
+      <div>
+        <span class="eyebrow">Reference</span>
+        <h1>How to use</h1>
+      </div>
+    </header>
+
+    <hr class="rule">
+
+    <div class="prose">
+
+      <section>
+        <p>This server is a small <strong>MCP (Model Context Protocol)</strong> server. It exposes tools an MCP-compatible client &mdash; an AI assistant, agent framework, or your own script &mdash; can call to store and remove contacts in a local SQLite database. The <a href="/">Contacts</a> page is a human-readable view of the same data.</p>
+      </section>
+
+      <section>
+        <h2>Connect a client</h2>
+        <p>Point your MCP client at this server's streamable-HTTP endpoint:</p>
+        <pre class="code-block">{{mcp_endpoint}}</pre>
+        <p>The client speaks the MCP streamable-HTTP transport. No authentication is required by default &mdash; this server is intentionally open to any client. Requests are capped per IP address (see Configuration below); exceeding the limit returns <code>429</code>.</p>
+      </section>
+
+      <section>
+        <h2>Tools</h2>
+
+        <h3>insert_contact <span class="badge">tool</span></h3>
+        <p>Collects and stores a contact's name, phone number, and optional email address.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>name</td><td>string</td><td>yes</td><td>Trimmed; rejected if empty.</td></tr>
+              <tr><td>phone_number</td><td>string</td><td>no</td><td>Defaults to empty.</td></tr>
+              <tr><td>email</td><td>string</td><td>no</td><td>Lowercased; must be unique if provided.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="code-block">{
+  "name": "Ada Lovelace",
+  "phone_number": "+1-555-0100",
+  "email": "ada@example.com"
+}</pre>
+        <p>Returns a confirmation string with the new contact's ID, or an error message if the email is already taken.</p>
+
+        <h3>delete_contact <span class="badge">tool</span></h3>
+        <p>Deletes a stored contact by its numeric ID.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>contact_id</td><td>integer</td><td>yes</td><td>The contact's <code>id</code>, shown on the Contacts page.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="code-block">{ "contact_id": 4 }</pre>
+        <p>Returns a confirmation string, or a not-found message if no contact has that ID.</p>
+      </section>
+
+      <section>
+        <h2>Using the dashboard</h2>
+        <p>The <a href="/">Contacts</a> page lists every stored record, newest first. Each row has a <strong>Delete</strong> button that removes the contact immediately (after a confirmation prompt) &mdash; the same operation as the <code>delete_contact</code> tool, triggered from the browser instead of an MCP client. Use <strong>Refresh</strong> to reload the list after inserting contacts through a client.</p>
+      </section>
+
+      <section>
+        <h2>Configuration</h2>
+        <p>Set these as environment variables when running the server or its container:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Variable</th><th>Default</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>DATABASE_PATH</td><td><code>./contacts.db</code></td><td>Where the SQLite file lives.</td></tr>
+              <tr><td>MCP_DEBUG</td><td><code>false</code></td><td>Enables debug mode and verbose logging.</td></tr>
+              <tr><td>ALLOWED_HOSTS</td><td>&mdash;</td><td>Comma-separated Host header(s) to accept (an IP address or domain). Enables DNS-rebinding protection; required in the Docker setup.</td></tr>
+              <tr><td>RATE_LIMIT_MAX_REQUESTS</td><td><code>120</code></td><td>Max requests per client IP per window, across all routes.</td></tr>
+              <tr><td>RATE_LIMIT_WINDOW_SECONDS</td><td><code>60</code></td><td>Window length in seconds for the rate limit.</td></tr>
+              <tr><td>DOGRAH_API_ENDPOINT</td><td><code>https://zyli.zoftcares.com</code></td><td>API endpoint passed to the embedded widget.</td></tr>
+              <tr><td>DOGRAH_WIDGET_SRC</td><td><code>http://localhost:3010/&#8230;</code></td><td>Widget loader script host &mdash; override for production.</td></tr>
+              <tr><td>DOGRAH_WIDGET_TOKEN</td><td>&mdash;</td><td>Widget embed token.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="page-footer">Data stored locally via SQLite &middot; <a href="/">Back to Contacts &rarr;</a></footer>
+  </main>
+</body>
+</html>
