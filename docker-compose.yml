@@ -8,7 +8,6 @@ services:
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:?set ALLOWED_HOSTS to this server's public IP or domain}
       - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-120}
       - RATE_LIMIT_WINDOW_SECONDS=${RATE_LIMIT_WINDOW_SECONDS:-60}
-      - DOGRAH_API_ENDPOINT=${DOGRAH_API_ENDPOINT:-https://zyli.zoftcares.com}
     volumes:
       - contacts-data:/data
     expose:

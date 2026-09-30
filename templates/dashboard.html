@@ -44,21 +44,5 @@
 
     <footer class="page-footer">Data stored locally via SQLite &middot; MCP tools: insert_contact, delete_contact &middot; <a href="/docs">Read the docs &rarr;</a></footer>
   </main>
-
-  <!-- Dograh Widget -->
-  <script>
-    (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = '{{dograh_widget_src}}?token={{dograh_widget_token}}&environment=production&apiEndpoint={{dograh_api_endpoint}}';
-      js.setAttribute('data-dograh-context', JSON.stringify({
-        page_url: window.location.href,
-        today: new Date().toISOString().slice(0, 10)
-      }));
-      js.async = true;
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'dograh-widget'));
-  </script>
 </body>
 </html>

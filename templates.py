@@ -3,8 +3,6 @@
 from html import escape
 from pathlib import Path
 
-from config import DOGRAH_API_ENDPOINT, DOGRAH_WIDGET_SRC, DOGRAH_WIDGET_TOKEN
-
 TEMPLATES_DIR = Path(__file__).with_name("templates")
 DASHBOARD_TEMPLATE = TEMPLATES_DIR / "dashboard.html"
 DOCS_TEMPLATE = TEMPLATES_DIR / "docs.html"
@@ -17,13 +15,7 @@ def render_dashboard(contacts: list[tuple]) -> str:
     template = DASHBOARD_TEMPLATE.read_text(encoding="utf-8")
     rows = "".join(_render_row(contact) for contact in contacts) if contacts else _empty_row()
 
-    return (
-        template.replace("{{rows}}", rows)
-        .replace("{{count}}", str(len(contacts)))
-        .replace("{{dograh_widget_src}}", DOGRAH_WIDGET_SRC)
-        .replace("{{dograh_widget_token}}", DOGRAH_WIDGET_TOKEN)
-        .replace("{{dograh_api_endpoint}}", DOGRAH_API_ENDPOINT)
-    )
+    return template.replace("{{rows}}", rows).replace("{{count}}", str(len(contacts)))
 
 
 def render_docs(base_url: str) -> str:

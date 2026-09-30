@@ -16,15 +16,3 @@ ALLOWED_HOSTS = [h.strip() for h in os.environ.get("ALLOWED_HOSTS", "").split(",
 # Per-client-IP request cap, since this server has no authentication.
 RATE_LIMIT_MAX_REQUESTS = int(os.environ.get("RATE_LIMIT_MAX_REQUESTS", "120"))
 RATE_LIMIT_WINDOW_SECONDS = int(os.environ.get("RATE_LIMIT_WINDOW_SECONDS", "60"))
-
-DOGRAH_API_ENDPOINT = os.environ.get(
-    "DOGRAH_API_ENDPOINT", "https://zyli.zoftcares.com"
-).rstrip("/")
-# Loader script host for the Dograh widget. Defaults to a local dev instance —
-# override with the real deployment host when running outside localhost.
-DOGRAH_WIDGET_SRC = os.environ.get(
-    "DOGRAH_WIDGET_SRC", "http://localhost:3010/embed/dograh-widget.js"
-)
-DOGRAH_WIDGET_TOKEN = os.environ.get(
-    "DOGRAH_WIDGET_TOKEN", "emb_oHIwUz_gC67zPoqNZYvYMhMUOZd0MmSPFjw5ASvclgY"
-)

@@ -56,9 +56,6 @@ Set these as environment variables:
 | `ALLOWED_HOSTS` | *(none — required in Docker)* | Comma-separated Host header(s) to accept, e.g. `203.0.113.5` or `your-domain.example.com`. Enables DNS-rebinding protection; must match the address in `Caddyfile`. |
 | `RATE_LIMIT_MAX_REQUESTS` | `120` | Max requests per client IP per window, across all routes (dashboard, delete, `/mcp`). Responds `429` once exceeded. |
 | `RATE_LIMIT_WINDOW_SECONDS` | `60` | Window length in seconds for the rate limit above. |
-| `DOGRAH_API_ENDPOINT` | `https://zyli.zoftcares.com` | API endpoint passed to the embedded widget |
-| `DOGRAH_WIDGET_SRC` | `http://localhost:3010/embed/dograh-widget.js` | Widget loader script host — override for production |
-| `DOGRAH_WIDGET_TOKEN` | (see `config.py`) | Widget embed token |
 
 ## Security status
 
